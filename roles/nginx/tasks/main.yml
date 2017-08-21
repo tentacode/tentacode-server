@@ -1,0 +1,17 @@
+---
+- name: Install nginx
+  package: name=nginx state=present
+
+- name: Create web directory in srv
+  file: state=directory path=/srv/www/default
+
+- name: Copy dummy php index
+  template: src=index.php dest=/srv/www/default/
+
+- name: Copy default website configuration
+  template: src=default dest=/etc/nginx/sites-enabled/
+  notify: restart web services
+
+- name: Copy nginx main configuration
+  template: src=nginx.conf dest=/etc/nginx/
+  notify: restart web services

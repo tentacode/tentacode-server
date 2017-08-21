@@ -1,0 +1,11 @@
+---
+- hosts: tentacode.net
+  become: yes
+  become_method: sudo
+  
+  roles:
+    - bash
+    - git
+    - php-fpm
+    - nginx
+    - node

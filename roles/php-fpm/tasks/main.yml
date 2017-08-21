@@ -1,0 +1,19 @@
+---
+- name: Install php-fpm and modules
+  apt: name={{ item }} state=present
+  with_items:
+    - php
+    - php-fpm
+    - php-mbstring
+    - php-xml
+
+- name: Disable default pool
+  command: mv /etc/php/7.0/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.disabled creates=/etc/php/7.0/fpm/pool.d/www.disabled
+  notify: restart web services
+
+- name: Copy php-fpm configuration
+  template: src=php-fpm.conf dest=/etc/php/7.0/fpm/pool.d/www.conf
+  notify: restart web services
+
+- name: Install composer
+  apt: name=composer state=present

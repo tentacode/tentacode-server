@@ -1,0 +1,7 @@
+---
+- name: Copying .bash_profile file
+  copy: src=.bash_profile dest=~/.bash_profile
+  become: false
+
+- name: Copying motd
+  template: src=motd dest=/etc/motd
