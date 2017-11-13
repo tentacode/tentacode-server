@@ -8,8 +8,16 @@
 - name: Copy dummy php index
   template: src=index.php dest=/srv/www/default/
 
-- name: Copy default website configuration
+- name: Copy tentacode.net default website configuration
   template: src=default dest=/etc/nginx/sites-enabled/
+  notify: restart web services
+
+- name: Copy cours.tentacode.net website configuration
+  template: src=cours.tentacode.net dest=/etc/nginx/sites-enabled/
+  notify: restart web services
+
+- name: Copy students-review.tentacode.net website configuration
+  template: src=students-review.tentacode.net dest=/etc/nginx/sites-enabled/
   notify: restart web services
 
 - name: Copy nginx main configuration

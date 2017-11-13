@@ -1,0 +1,16 @@
+---
+- name: Install acl
+  apt: name=acl state=present
+
+- name: Proper permissions to /srv directory
+  acl:
+    path: /srv
+    recursive: yes
+    default: yes
+    entity: "{{ item }}"
+    permissions: rwx
+    etype: user
+    state: present
+  with_items:
+    - gabriel
+    - www-data

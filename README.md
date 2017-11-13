@@ -1,14 +1,14 @@
 # tentacode-server
 
-## Add an alias to server ip
+## Setup ssh authentication
 
-In `/etc/hosts`:
+### Connect via ssh
 
 ```
-12.34.56.78    tentacode-server
+ssh root@tentacode.net
 ```
 
-## Add the user gabriel with sudo privileges
+### Add the user gabriel with sudo privileges
 
 ```bash
 adduser gabriel
@@ -31,13 +31,16 @@ gabriel    ALL=(ALL:ALL) NOPASSWD:ALL
 Add user public ssh key:
 
 ```bash
+su gabriel
 mkdir ~/.ssh
 vi ~/.ssh/authorized_keys
 ```
 
 And copy content of your local `~/.ssh/id_rsa.pub`.
 
-## Setup Ansible on node
+## Setup Ansible
+
+### On server
 
 You need python 2.5 > to run Ansible on the node:
 
@@ -45,7 +48,7 @@ You need python 2.5 > to run Ansible on the node:
 sudo apt-get install python
 ```
 
-## Setup Ansible on control machine
+### On control machine
 
 Install last stable `Ansible` on Mac OS via  `pip`:
 
@@ -59,6 +62,8 @@ To ensure that ansible is properly setup, run:
 ansible -i hosts all -m ping
 ```
 
-## Setup tentacode-server
+## Setup the server
 
-Launch playbook via with `ansible-playbook -i hosts setup-webserver.yml`
+Copy `credentials.yml.dist` into `credentials.yml` and set proper values.
+
+Launch playbook with `ansible-playbook -i hosts setup-webserver.yml`

@@ -1,15 +1,42 @@
 server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
+    listen 80;
+    listen [::]:80; 
+    server_name tentacode.net www.tentacode.net;
+	
+    location / {
+        return 301 https://www.tentacode.net$request_uri; 
+    }
+}
+
+server {
+	listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name tentacode.net;
+	
+    ssl on;
+    ssl_certificate /etc/letsencrypt/live/tentacode.net/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/tentacode.net/privkey.pem;
+
+    location / {
+        return 301 https://www.tentacode.net$request_uri; 
+    }
+}
+
+server {
+	listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name www.tentacode.net;
+	
+    ssl on;
+    ssl_certificate /etc/letsencrypt/live/tentacode.net/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/tentacode.net/privkey.pem;
 
 	root /srv/www/tentacode.net/web;
 
 	index index.php app.php;
 
-	server_name _;
-
 	location / {
-		try_files $uri $uri/ =404;
+        try_files $uri /app.php$is_args$args;
 	}
 	
     location ~* \.(gif|jpg|jpeg|png|css|js)$ {

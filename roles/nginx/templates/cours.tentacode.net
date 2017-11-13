@@ -1,0 +1,28 @@
+server {
+	listen 80;
+	listen [::]:80;
+
+	root /srv/www/cours.tentacode.net/web;
+
+	index app.php;
+
+	server_name cours.tentacode.net;
+
+	location / {
+        try_files $uri /app.php$is_args$args;
+	}
+	
+    location ~* \.(gif|jpg|jpeg|png|css|js)$ {
+        expires max;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_index index.php;
+        fastcgi_pass  unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_param   SCRIPT_FILENAME
+                        $document_root$fastcgi_script_name;
+        include       fastcgi_params;
+    }
+}

@@ -2,21 +2,18 @@
 - hosts: tentacode.net
   become: yes
   become_method: sudo
+  vars_files:
+    - credentials.yml
 
   tasks:
     - name: Cloning git repository
       git:
-        repo: git://github.com/tentacode/tentacode.net.git
+        repo: https://{{ github_user|urlencode }}:{{ github_password|urlencode }}@github.com/tentacode/tentacode.net.git
         dest: /srv/www/tentacode.net
       notify: 
           - composer install
           - npm install
           - grunt install
-    - command: /bin/true
-      notify: 
-        - composer install
-        - npm install
-        - grunt install
 
   handlers:
     - name: composer install
@@ -28,7 +25,7 @@
       args:
         chdir: /srv/www/tentacode.net
     - name: bower install
-      command: ./node_modules/bower/bin/bower install --allow-root
+      command: ./node_modules/bower/bin/bower install
       args:
         chdir: /srv/www/tentacode.net  
     - name: grunt install

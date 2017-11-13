@@ -1,0 +1,27 @@
+---
+- hosts: tentacode.net
+  become: yes
+  become_user: gabriel
+  vars_files:
+    - credentials.yml
+
+  tasks:
+    - name: Cloning git repository
+      git:
+        repo: https://{{ github_user|urlencode }}:{{ github_password|urlencode }}@github.com/tentacode/cours.tentacode.net.git
+        dest: /srv/www/cours.tentacode.net
+      notify: 
+          - composer install
+          - copy parameters.yml
+
+  handlers:
+    - name: composer install
+      command: composer install -o
+      args:
+        chdir: /srv/www/cours.tentacode.net
+    - name: copy parameters.yml
+      command: cp -R app/config/parameters.yml.dist app/config/parameters.yml
+      args:
+        chdir: /srv/www/cours.tentacode.net
+      
+        
