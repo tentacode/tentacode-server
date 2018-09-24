@@ -10,3 +10,6 @@
     - nginx
     - node
     - permission
+    - role: symfony
+      project_name: tentacode.net
+      server_names: tentacode.net www.tentacode.net

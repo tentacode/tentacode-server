@@ -1,7 +1,5 @@
 ---
 - hosts: tentacode.net
-  become: yes
-  become_method: sudo
   vars_files:
     - credentials.yml
 
@@ -10,27 +8,20 @@
       git:
         repo: https://{{ github_user|urlencode }}:{{ github_password|urlencode }}@github.com/tentacode/tentacode.net.git
         dest: /srv/www/tentacode.net
-      notify: 
-          - composer install
-          - npm install
-          - grunt install
 
-  handlers:
-    - name: composer install
+    - name: Composer install
       command: composer install
       args:
         chdir: /srv/www/tentacode.net
-    - name: npm install
+
+    - name: Npm install
       command: npm install
       args:
         chdir: /srv/www/tentacode.net
-    - name: bower install
-      command: ./node_modules/bower/bin/bower install
-      args:
-        chdir: /srv/www/tentacode.net  
-    - name: grunt install
-      command: ./node_modules/grunt-cli/bin/grunt
+      become: yes
+      become_method: sudo
+
+    - name: Grunt install
+      command: ./node_modules/.bin/grunt
       args:
         chdir: /srv/www/tentacode.net
-      
-        

@@ -66,4 +66,8 @@ ansible -i hosts all -m ping
 
 Copy `credentials.yml.dist` into `credentials.yml` and set proper values.
 
-Launch playbook with `ansible-playbook -i hosts setup-webserver.yml`
+Launch the setup server playbook with `ansible-playbook -i hosts setup-webserver.yml`
+
+Launch each "deploy" playbooks with `ansible-playbook -i hosts deploy.something.yml`
+
+Launch the letsencrypt playbook with `ansible-playbook -i hosts letsencrypt.yml`

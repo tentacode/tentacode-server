@@ -1,0 +1,7 @@
+---
+- hosts: tentacode.net
+  become: yes
+  become_method: sudo
+  
+  roles:
+    - letsencrypt

@@ -2,24 +2,22 @@
 - name: Install nginx
   package: name=nginx state=present
 
+- name: Remove default configuration
+  file: state=absent path=/etc/nginx/sites-enabled/default
+
 - name: Create web directory in srv
   file: state=directory path=/srv/www/default
 
 - name: Copy dummy php index
   template: src=index.php dest=/srv/www/default/
 
-- name: Copy tentacode.net default website configuration
-  template: src=default dest=/etc/nginx/sites-enabled/
-  notify: restart web services
-
-- name: Copy cours.tentacode.net website configuration
-  template: src=cours.tentacode.net dest=/etc/nginx/sites-enabled/
-  notify: restart web services
-
-- name: Copy students-review.tentacode.net website configuration
-  template: src=students-review.tentacode.net dest=/etc/nginx/sites-enabled/
+- name: Copy default website configuration
+  template: src=default dest=/etc/nginx/sites-enabled/zzz-default
   notify: restart web services
 
 - name: Copy nginx main configuration
   template: src=nginx.conf dest=/etc/nginx/
   notify: restart web services
+
+- name: Add crontab to reload nginx server
+  cron: minute="35" hour="2" weekday="1" job="/etc/init.d/nginx reload"

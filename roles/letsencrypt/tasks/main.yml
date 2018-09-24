@@ -1,0 +1,5 @@
+- name: Install certbot
+  apt: name=python-certbot-nginx state=latest
+
+- name: Cerbot certificates
+  command: certbot --authenticator webroot --installer nginx --non-interactive --agree-tos --redirect -m contact@gabrielpillet.com -d tentacode.net -d www.tentacode.net --webroot-path=/srv/www/tentacode.net/web
